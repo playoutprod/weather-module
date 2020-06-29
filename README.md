@@ -1,15 +1,17 @@
+# weather-module
+
 # Approche
 
 ## user stories
 
-- En tant qu'utilisateur, je veux pouvoir chercher une ville pour avoir la météo.
+- En tant qu'utilisateur, je veux pouvoir chercher une ville pour avoir la météo courante.
 
 
 ## Design
 
 ### Vue :
 
-- Moteur de recherche
+- Moteur de recherche avec autocomplete
 - Header graphique avec le nom de la ville, description rapide avec picto + température avec swtich de °C à °F en cliquant sur le symbol (info en rollover)
 - List des données diverses dans une table
 
@@ -25,19 +27,20 @@ Clean, outline, popin-flottant, animations basiques.
 
 ### Datas :
 
-- Les datas sont chargées depuis une api REST qui renvoie une json des données en fonction du nom de ville
+- Les datas sont chargées depuis une api REST qui renvoie un json des données en fonction du nom de ville
 
 ex : [openweathermap.org](https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=439d4b804bc8187953eb36d2a8c26a02)
 
 ### Composants :
 
+- Popin responsive au centre de l'écran.
  - Form avec api call
  - Composant header
-  - titre(string)
-  - Description rapide : Picto(png) {mot clé}(string) : {description}(string)
-  - temperature(number) + symbole (°C ou °F)
+    - titre(string)
+    - Description rapide : Picto(png) {mot clé}(string) : {description}(string)
+    - temperature(number) + symbole (°C ou °F)
  - Composant datas
-  - Table deux colonnes :
+    - Table deux colonnes :
   |intitulé|valeur|
   |-|-|
   |Heure lcoale|10:15, 29 Jun 2020|
@@ -50,33 +53,25 @@ ex : [openweathermap.org](https://samples.openweathermap.org/data/2.5/weather?q=
 
 
 
-# test
-
-> test
-
-## Build Setup
-
-``` bash
-# install dependencies
+## Project setup
+```
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
