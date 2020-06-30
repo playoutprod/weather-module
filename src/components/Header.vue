@@ -158,5 +158,11 @@ export default {
     .weather_code{
       font-size: 1em;
     }
+    .title{
+      height:40%;
+    }
+    .weather{
+      height:60%;
+    }
   }
 </style>

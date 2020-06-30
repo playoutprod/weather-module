@@ -1,6 +1,6 @@
 
 <template lang="html">
-  <div id="weather-module" v-bind:class="{hasdata :hasData,shift:location.shift}">
+  <div id="weather-module" v-bind:class="classObject">
     <Search v-on:change="onLocationChange"></Search>
     <Popin dynid="weather" :message="message">
       <div class="container">
@@ -77,7 +77,8 @@ export default {
           })
           .then(resp => {
             //Set locatime to location
-            this.location.localTime = new Date((resp.data.timestamp-resp.data.gmtOffset)*1000);
+            this.location.gmtOffset = resp.data.gmtOffset;
+            this.location.localTime = new Date(resp.data.timestamp*1000 + new Date().getTimezoneOffset()*60*1000);
             resolve(resp);
           }).catch(err => {
             console.log(err);
@@ -100,8 +101,21 @@ export default {
           .then(resp => {
             //Save weather data
             this.wdata = resp.data;
+            //Convert sunrise and sunset to UTC timestamp
+            this.wdata.sunrise.value = (new Date(this.wdata.sunrise.value)).getTime() + parseInt(this.location.gmtOffset*1000)+ new Date().getTimezoneOffset()*60*1000;
+            this.wdata.sunset.value = (new Date(this.wdata.sunset.value)).getTime() + parseInt(this.location.gmtOffset*1000)+ new Date().getTimezoneOffset()*60*1000;
+
             //Set shift (night or day) from sunrise time and localtime
-            this.location.shift = new Date(this.wdata.sunrise.value)-this.location.localTime < 0 ? 'day' : 'night';
+            if(this.wdata.sunrise.value - this.location.localTime.getTime() < 0){
+              if(this.wdata.sunset.value - this.location.localTime.getTime() > 0){
+                this.location.shift = 'day';
+              }else{
+                this.location.shift = 'night';
+              }
+            }else{
+              this.location.shift = 'night';
+            }
+
             this.status='endsearch';
             resolve(resp);
           }).catch(err => {
@@ -122,9 +136,15 @@ export default {
     }
   },
   computed:{
-    hasData : function(){
-      //If there's not data, return a boolean to toggle classes
-      return(Object.keys(this.wdata).length > 0)
+    classObject : function (){
+
+      return(
+        {
+          hasdata :Object.keys(this.wdata).length > 0,
+          day:this.location.shift === "day",
+          night : this.location.shift === "night",
+        }
+      )
     },
     message : function(){
       //Message content
@@ -206,6 +226,11 @@ export default {
   @media only screen and (max-width: 950px){
     .popin{
       height:50%;
+    }
+  }
+  @media only screen and (max-width: 950px){
+    .popin{
+      height:70%;
     }
   }
 </style>

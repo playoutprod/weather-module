@@ -1,3 +1,5 @@
+/Stat dispay components
+
 <template lang="html">
   <div class="stat">
     <div class="stat_name">{{localized_name}}</div>
@@ -19,7 +21,15 @@ export default {
       return(locale.translations[this.name] ? locale.translations[this.name] : this.name)
     },
     localized_value:function(){
-      return(locale.translations[this.value.value] ? locale.translations[this.value.value] : this.value.value)
+      let value = this.value.value;
+      //Rounded values
+      if(this.value.units === 'hPa' || this.value.units === 'degrees' || this.value.units === '%'){
+        value = Math.round(value)
+      }else if(!this.value.units){
+        value=new Date(value);
+        value = value.getHours()+':'+value.getMinutes()+':'+value.getSeconds();
+      }
+      return(locale.translations[value] ? locale.translations[value] : value)
     },
     localized_unit:function(){
       return(locale.translations[this.value.units] ? locale.translations[this.value.units] : this.value.units)
