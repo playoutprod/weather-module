@@ -4,10 +4,14 @@
 //default id is 'popin-default'
 
 //Pass content as children nodes (slot)
+//Pass message trought prop message
 
 <template lang="html">
   <div class="popin" v-bind:id="'popin-'+dynid">
     <slot></slot>
+    <div class="message" v-bind:class="{show :displayMessage}">
+      <span class="content">{{message}}</span>
+    </div>
   </div>
 </template>
 
@@ -18,6 +22,20 @@ export default {
     dynid:{
       type:String,
       default:'default'
+    },
+    message:{
+      type:String,
+      default:''
+    }
+  },
+  computed:{
+    displayMessage : function(){
+      //Display error messages
+      if(this.message === ''){
+        return(false);
+      }else{
+        return(true);
+      }
     }
   }
 }
@@ -31,11 +49,28 @@ export default {
     justify-content: flex-start;
     border-radius: 2em;
     overflow: hidden;
-    width:60%;
-    height:60%;
-    min-width: 320px;
-    min-height: 400px;
-    background-color: #DDD;
+    width:90%;
+    height:90%;
+    background-color: #EEE;
     box-shadow: 2px 2px 21px -6px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .message{
+    position: absolute;
+    top:0;
+    left:0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+    background-color: #FFF;
+    color:#888;
+    opacity:0;
+    font-size: 2em;
+  }
+  .message.show{
+    opacity:1;
   }
 </style>
