@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="datatable">
-    <ul>
+    <ul v-pan="onPan" v-bind:style="{left:scrollPosition+'px'}">
       <li v-for="(stat,key) in weather" :key="key">
           <Stat :value="stat" :name="key"/>
       </li>
@@ -18,6 +18,36 @@ export default {
   props:["wdata"],
   components:{
     Stat
+  },
+  data(){
+    //SCrollposition control the list left style, scrolltarget is used to store the DOM ref.
+    return({
+      scrollPosition : 0,
+      scrollTarget : null
+    })
+  },
+  updated(){
+    //Set a dom ref to calculate width (last element of the list)
+    this.scrollTarget = this.$el.querySelector('li:last-child');
+  },
+  methods:{
+    onPan(e){
+      //Add the delta to the current position of the list
+      let newScrollPosition = this.scrollTarget.parentNode.offsetLeft + e.deltaX/10;
+
+      //Calculate element width by addind last element position + last element width
+      const larg = this.scrollTarget.offsetLeft+this.scrollTarget.clientWidth;
+
+      if(newScrollPosition > 0){
+        //Max left is 0
+        newScrollPosition = 0;
+      }else if(newScrollPosition<this.scrollTarget.parentNode.clientWidth-larg){
+        //Max right is the width of the popin minus width of the list
+        newScrollPosition = this.scrollTarget.parentNode.clientWidth-larg;
+      }
+
+      this.scrollPosition = newScrollPosition;
+    }
   },
   computed:{
     //Weather data is filtered
@@ -44,6 +74,7 @@ export default {
     overflow-x: hidden;
   }
   ul{
+    position: relative;
     height:100%;
     display: flex;
     flex-direction: row;
@@ -51,6 +82,8 @@ export default {
     align-items: center;
     margin:0;
     padding:0;
+    overflow: visible;
+    flex-wrap: nowrap;
   }
   li{
     float:left;

@@ -69,6 +69,9 @@ export default {
     color:#888;
     opacity:0;
     font-size: 2em;
+    pointer-events:none;
+    padding: 2em;
+    box-sizing: border-box;
   }
   .message.show{
     opacity:1;
