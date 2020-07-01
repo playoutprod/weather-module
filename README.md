@@ -6,6 +6,7 @@
 
 - En tant qu'utilisateur, je veux pouvoir chercher une ville pour avoir la météo courante de cette ville.
 
+[Voir le résultat)](https://weather-module.vercel.app/)
 
 ## UX/UI
 
