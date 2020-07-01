@@ -39,6 +39,19 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .stat{
+    background-color: rgba(255,255,255,0.04);
+    width:80%;
+    height:80%;
+    border-radius: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: .5em;
+    box-sizing:border-box;
+
+  }
   .stat_name{
     font-size: .8em;
     margin-bottom: 1em;

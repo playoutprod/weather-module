@@ -2,8 +2,8 @@
 <template lang="html">
   <div id="weather-module" v-bind:class="classObject">
     <Search v-on:change="onLocationChange"></Search>
-    <Popin dynid="weather" :message="message">
-      <div class="container">
+    <Popin dynid="weather" v-bind:message="message" v-bind:loading="status === 'searching'">
+      <div class="container" v-if="showContent">
         <Header v-bind:location="location" v-bind:shift="location.shift" v-bind:temperature="wdata.temp" v-bind:weather_code="wdata.weather_code"></Header>
         <DataTable v-bind:wdata="wdata"></DataTable>
       </div>
@@ -137,7 +137,6 @@ export default {
   },
   computed:{
     classObject : function (){
-
       return(
         {
           hasdata :Object.keys(this.wdata).length > 0,
@@ -146,11 +145,14 @@ export default {
         }
       )
     },
+    showContent: function(){
+      return(this.status === 'endsearch');
+    },
     message : function(){
       //Message content
       if(Object.keys(this.wdata).length === 0){
         if(this.status === 'init'){
-          return("Veuillez cherche une ville");
+          return("Veuillez chercher une ville");
         }if(this.status === 'searching'){
           return("Patience, la recherche est en court");
         }else{
@@ -165,7 +167,7 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
   #weather-module{
     display:flex;
     flex-direction: column;
@@ -197,13 +199,13 @@ export default {
   #weather-module.night:after{
     opacity:1;
   }
-  .popin{
+  #weather-module .popin{
     width:70%;
     height:70%;
     min-width: 320px;
     min-height: 400px;
   }
-  .container{
+  #weather-module .container{
     position: relative;
     width:100%;
     height:100%;
@@ -211,25 +213,20 @@ export default {
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
-    opacity:0;
-    transition: opacity 1s ease-in-out;
   }
-  .hasdata .container{
-    opacity:1;
-  }
-  .header{
+  #weather-module .header{
     height:70%;
   }
-  .datatable{
+  #weather-module .datatable{
     height:30%;
   }
   @media only screen and (max-width: 950px){
-    .popin{
+    #weather-module .popin{
       height:50%;
     }
   }
   @media only screen and (max-width: 950px){
-    .popin{
+    #weather-module .popin{
       height:70%;
     }
   }
