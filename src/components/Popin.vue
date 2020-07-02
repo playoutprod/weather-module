@@ -10,7 +10,8 @@
   <div class="popin" v-bind:id="'popin-'+dynid">
     <slot></slot>
     <div class="message" v-bind:class="{show :displayMessage}">
-      <span class="content">{{message}}</span>
+      <span class="content" v-if="!loading">{{message}}</span>
+      <span class="loader" v-if="loading"><img src="../assets/loader.gif"/></span>
     </div>
   </div>
 </template>
@@ -26,6 +27,10 @@ export default {
     message:{
       type:String,
       default:''
+    },
+    loading:{
+      type:Boolean,
+      default:false
     }
   },
   computed:{
@@ -75,5 +80,8 @@ export default {
   }
   .message.show{
     opacity:1;
+  }
+  .loader img{
+    width:4em;
   }
 </style>

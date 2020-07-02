@@ -2,14 +2,22 @@
 
 <template lang="html">
   <div class="header">
-    <div class="title">
-      <h2>{{city}}</h2>
-    </div>
+    <transition name="slideInBottom" appear>
+      <div class="title">
+        <h2>{{city}}</h2>
+      </div>
+    </transition>
     <div class="weather">
-      <div class="icon"><img v-bind:src="getIcon()"/></div>
+      <transition name="fadeIn" appear>
+        <div class="icon"><img v-bind:src="getIcon()"/></div>
+      </transition>
       <div class="quick_infos">
-        <h3 class="temperature"><span class="value">{{Math.round(temperature.value)}}</span><span class="unit">°{{temperature.units}}</span></h3>
-        <p class="weather_code">{{weather_code.value.replace('_',' ')}}</p>
+        <transition name="slideInRight" appear>
+          <div>
+            <h3 class="temperature"><span class="value">{{Math.round(temperature.value)}}</span><span class="unit">°{{temperature.units}}</span></h3>
+            <p class="weather_code">{{weather_code.value.replace('_',' ')}}</p>
+          </div>
+        </transition>
       </div>
     </div>
 
@@ -81,6 +89,31 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .slideInRight-enter-active,.slideInBottom-enter-active{
+    transition: opcity .2s cubic-bezier(0.990, 0.000, 0.055, 1.010),transform .2s cubic-bezier(0.990, 0.000, 0.055, 1.010);
+  }
+  .slideInRight-enter-to,.slideInBottom-enter-to{
+    opacity:1;
+    transform : translate(0,0);
+  }
+  .slideInRight-enter,.slideInRight-leave-to{
+    opacity:0;
+    transform : translate(20%,0);
+  }
+  .slideInBottom-enter,.slideInBottom-leave-to{
+    opacity:0;
+    transform : translate(0,20%);
+  }
+
+  .fadeIn-enter-active{
+    transition: opacity 1s cubic-bezier(0.990, 0.000, 0.055, 1.010);
+  }
+  .fadeIn-enter-to{
+    opacity:1;
+  }
+  .fadeIn-enter,.slideIn-leave-to{
+    opacity:0;
+  }
   .header{
     display: flex;
     flex-direction: column;
