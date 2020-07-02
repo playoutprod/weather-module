@@ -15,7 +15,7 @@
         <transition name="slideInRight" appear>
           <div>
             <h3 class="temperature"><span class="value">{{Math.round(temperature.value)}}</span><span class="unit">°{{temperature.units}}</span></h3>
-            <p class="weather_code">{{weather_code.value.replace('_',' ')}}</p>
+            <p class="weather_code">{{weather}}</p>
           </div>
         </transition>
       </div>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+
+import locale from '../locales/fr_FR.js';
 
 export default {
   name:"Header",
@@ -60,7 +62,9 @@ export default {
       }else{
         return(this.location.name ? this.location.name : '')
       }
-
+    },
+    weather:function(){
+      return(locale.translations[this.weather_code.value] ? locale.translations[this.weather_code.value] : this.weather_code.value.replace('_',' '))
     }
   },
   data(){
